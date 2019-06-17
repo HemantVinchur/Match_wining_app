@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>DREAM 10</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  
+  <style>
+  	body {
+		  background: url(1.jpeg) no-repeat right top fixed; 
+  background-size: cover;
+}
+  </style>
+  
+  <script language="JavaScript">
+
+    function showInput() {
+
+      var data = {mail: document.getElementById("mail").value, 
+      first_name: document.getElementById("first_name").value,
+      last_name: document.getElementById("last_name").value,
+      username: document.getElementById("username").value,
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value,
+      mobile: document.getElementById("mobile").value,
+    }
+body={
+  method: 'POST', // *GET, POST, PUT, DELETE, etc.
+  mode:'cors',
+  headers:{
+    'Content-Type':'application/json'
+  },
+  body: JSON.stringify(data), // body data type must match "Content-Type" header
+}
+      console.log(document.getElementById("mail"));
+      console.log(document.getElementById("name"));
+      console.log(document.getElementById("last_name"));
+      console.log(document.getElementById("email"));
+      console.log(document.getElementById("contact"));
+      console.log(document.getElementById("password"));
+      console.log(document.getElementById("birthday"));
+
+ 
+    
+
+      fetch(url, body).then(
+       function (response) {
+         console.log(response.headers.get('Content-Type'));
+         if (response.status !== 200) {
+           console.log('Looks like there was a problem. Status Code: ' +
+             response.status);
+           return;
+         }
+
+         // Examine the text in the response
+         response.json().then(function (data) {
+           console.log(data);
+         });
+       })
+       .catch(function (err) {
+         console.log('Fetch Error :-S', err);
+       });
+   }
+    
+var request = new XMLHttpRequest()
+var url = 'http://localhost:4000/accounts';
+
+    </script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">DREAM 10</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="index.html">Home</a></li>
+      <li><a href="predictor.html">Predictor</a></li>
+      <li><a href="login.html">log in</a></li>
+      <li><a href="signup.html">sign up</a></li>
+    </ul>
+  </div>
+</nav>  
+</div>
+<form style="    padding-right: 500px;">
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="validationServer01">First name</label>
+        <input type="text" class="form-control is-valid" id="validationServer01" placeholder="First name" required>
+        <div class="valid-feedback">
+          
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="validationServer02">Last name</label>
+        <input type="text" class="form-control is-valid" id="validationServer02" placeholder="Last name"  required>
+        <div class="valid-feedback">
+          
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="validationServerUsername">Username</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupPrepend3"></span>
+          </div>
+          <input type="text" class="form-control is-invalid" id="validationServerUsername" placeholder="Username" aria-describedby="inputGroupPrepend3" required>
+          <div class="invalid-feedback">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-6 mb-3">
+        <label for="validationServer03">Email</label>
+        <input type="text" class="form-control is-invalid" id="validationServer03" placeholder="Email" required>
+        <div class="invalid-feedback">
+          
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="validationServer04">password</label>
+        <input type="text" class="form-control is-invalid" id="validationServer04" placeholder="password" required>
+        <div class="invalid-feedback">
+          
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="validationServer05">mobile</label>
+        <input type="password" class="form-control is-invalid" id="validationServer05" placeholder="9993592121" required>
+        <div class="invalid-feedback">
+          
+        </div>
+      </div>
+    </div>
+    <div class="form-group"> 
+      <div class="form-check">
+        <input class="form-check-input is-invalid" style="margin-left:20px" type="checkbox" value="" id="invalidCheck3" required>
+        <label class="form-check-label" for="invalidCheck3"style="margin-top:20px;margin-left:20px;">
+          Agree to terms and conditions. You must agree before submitting.
+        </label>
+        
+      </div>
+    </div>
+    <button style="margin: 20px;" class="btn btn-primary" type="submit">Submit form</button>
+  </form>
+
+</body>
+</html>
