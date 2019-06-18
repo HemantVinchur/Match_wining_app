@@ -44,7 +44,7 @@ app.get('/accounts', (req, res) => {
         })
 })
 
-app.post('/accounts', (req, res) => {
+app.post('/accounts', (req, res, next) => {
     let newAccount = req.body
     db.collection('accounts').insert(newAccount, (error, results) => {
         console.log("Post executed");
@@ -54,21 +54,22 @@ app.post('/accounts', (req, res) => {
     })
 })
 
-app.post('/accounts',function(req,res){
-    MongoClient.connect(url, function(err, db) {
-    db.collection('accounts').findOne({ name: req.body.name}, function(err, user) {
-              if(user ===null){
-                res.end("Login invalid");
-             }else if (user.name === req.body.name && user.pass === req.body.pass){
+app.post('/login',(req,res)=>{
+    db.collection('accounts').findOne({ mail: req.body.mail}, function(err, user){
+        console.log("000000000000000000000");
+        console.log(user);
+        console.log(user.mail);
+              if(user.mail===null){
+                console.log("11111111111111111111");
+                res.send("Login invalid");
+             }if (user.mail === req.body.mail && user.password === req.body.password){
                 res.send("Successful login")
            } else {
              console.log("Credentials wrong");
-             res.end("Login invalid");
+             res.send("Login invalid");
            }
     })
   })
- })
-
 
 app.put('/accounts/:id', (req, res) => {
     db.collection('accounts')
@@ -90,8 +91,6 @@ app.delete('/accounts/:id', (req, res) => {
             client.close();
         })
 })
-
-
 })
 app.use(errorhandler())
 app.listen(4000)
