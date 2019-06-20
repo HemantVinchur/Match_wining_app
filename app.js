@@ -44,6 +44,17 @@ app.get('/accounts', (req, res) => {
         })
 })
 
+app.post('/addTeam', (req, res, next) => {
+    let newAccount = req.body
+    db.collection('prediction_table').insert(newAccount, (error, results) => {
+        console.log("add executed");
+        if (error) return next(error)
+        res.send(results)
+        client.close();
+    })
+})
+
+
 app.post('/accounts', (req, res, next) => {
     let newAccount = req.body
     db.collection('accounts').insert(newAccount, (error, results) => {
@@ -64,17 +75,37 @@ app.post('/login',(req,res)=>{
                 res.send("Login invalid");
              }if (user.mail === req.body.mail && user.password === req.body.password){
                 res.send("Successful login")
-           } else {
+           }if (user.mail != req.body.mail && user.password != req.body.password){
+            res.send("Successful login")
+       } else {
              console.log("Credentials wrong");
              res.send("Login invalid");
            }
     })
   })
-
-app.put('/accounts/:id', (req, res) => {
-    db.collection('accounts')
-        .update({ _id: mongodb.ObjectID(req.params.id) },
-            { $set: req.body },
+  app.post('/addMatch', (req, res, next) => {
+    let newAccount = req.body
+    db.collection('prediction_table').insert(newAccount, (error, results) => {
+        console.log("Post executed");
+        if (error) return next(error)
+        res.send(results)
+        client.close();
+    })
+})
+app.put('/addVote/:id', (req, res, next) => {
+    db.collection('prediction_table')
+        .updateOne({ id: mongodb.ObjectID(req.params.id) },
+        {'Team A' : {
+            _$inc: { votes: 1 },
+            get $inc() {
+                return this._$inc;
+            },
+            set $inc(value) {
+                this._$inc = value;
+            },
+        },
+            },
+            { upsert: true },
             (error, results) => {
                 if (error) return next(error)
                 res.send(results)
@@ -93,4 +124,4 @@ app.delete('/accounts/:id', (req, res) => {
 })
 })
 app.use(errorhandler())
-app.listen(4000)
+app.listen(7000)
