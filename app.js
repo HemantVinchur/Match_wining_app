@@ -33,38 +33,72 @@ client.connect((error) => {
     const db = client.db(dbName);
     console.log("Connect executed");
 
-
-app.get('/accounts', (req, res) => {
+try{
+app.get('/accounts', (req, res, next) => {
     db.collection('accounts')
         .find({}, { sort: { _id: -1 } })
         .toArray((error, accounts) => {
-            if (error) return next(error)
-            res.send(accounts)
-            client.close();
+            if (error){
+                 return res.json({
+                     statusCode: 400,
+                     message:"User not found",
+                     data: {}
+                 })
+                }
+            return res.contentType("json").json({
+                statusCode: 200,
+                message: "User",
+                data: {results}
+            })
         })
 })
-
+}catch (err){
+             console.log(err);
+}
+try{
 app.post('/addTeam', (req, res, next) => {
     let newAccount = req.body
     db.collection('prediction_table').insert(newAccount, (error, results) => {
         console.log("add executed");
-        if (error) return next(error)
-        res.send(results)
-        client.close();
-    })
+        if (error){
+            return res.json({
+                statusCode: 400,
+                message:"User not found",
+                data: {}
+            })
+           }
+       return res.contentType("json").json({
+           statusCode: 200,
+           message: "User",
+           data: {results}
+       })
+   })
 })
-
-
+}catch (err){
+        console.log(err);
+}
+try{
 app.post('/accounts', (req, res, next) => {
     let newAccount = req.body
     db.collection('accounts').insert(newAccount, (error, results) => {
         console.log("Post executed");
-        if (error) return next(error)
-        res.send(results)
-        client.close();
-    })
+        if (error){
+            return res.json({
+                statusCode: 400,
+                message:"User not found",
+                data: {}
+            })
+           }
+       return res.contentType("json").json({
+           statusCode: 200,
+           message: "Success",
+           data: {results}
+       })
+   })
 })
-
+}catch (err){
+        console.log(err);
+}try{
 app.post('/login',(req,res)=>{
     db.collection('accounts').findOne({ mail: req.body.mail}, function(err, user){
         console.log("000000000000000000000");
@@ -77,51 +111,120 @@ app.post('/login',(req,res)=>{
                 res.send("Successful login")
            }if (user.mail != req.body.mail && user.password != req.body.password){
             res.send("Successful login")
-       } else {
-             console.log("Credentials wrong");
-             res.send("Login invalid");
-           }
-    })
-  })
+       }       if (error){
+        return res.json({
+            statusCode: 400,
+            message:"User not found",
+            data: {}
+        })
+       }
+   return res.contentType("json").json({
+       statusCode: 200,
+       message: "Success",
+       data: {results}
+   })
+})
+})
+}catch (err){
+    console.log(err);
+}try{
   app.post('/addMatch', (req, res, next) => {
     let newAccount = req.body
     db.collection('prediction_table').insert(newAccount, (error, results) => {
         console.log("Post executed");
-        if (error) return next(error)
-        res.send(results)
-        client.close();
+        if (error){
+            return res.json({
+                statusCode: 400,
+                message:"User not found",
+                data: {}
+            })
+           }
+       return res.contentType("json").json({
+           statusCode: 200,
+           message: "Success",
+           data: {results}
+       })
     })
-})
-app.put('/addVote/:id', (req, res, next) => {
+    })
+    }catch (err){
+        console.log(err);
+    }
+    try{
+app.put('/addVote/:id/:teamName', (req, res, next) => {
+    // db.collection('prediction_table')
+    //     .update({ id: mongodb.ObjectID(req.params.id),
+    //               "teams.name":req.params.teamName},
+    //     {
+    //         $inc: { "teams.$.votes": 1 },
+    //     },
+            
+    //         //{ upsert: true },
+    //         (error, results) => {
+    //             if (error){
+    //                 return res.json({
+    //                     statusCode: 400,
+    //                     message:"User not found",
+    //                     data: {}
+    //                 })
+    //                }
+    //            return res.contentType("json").json({
+    //                statusCode: 200,
+    //                message: "Success",
+    //                data: {results}
+    //            })
+    //         })
+    //         })
+    //         }catch (err){
+    //             console.log(err);
+    //         }
+
     db.collection('prediction_table')
-        .updateOne({ id: mongodb.ObjectID(req.params.id) },
-        {'Team A' : {
-            _$inc: { votes: 1 },
-            get $inc() {
-                return this._$inc;
-            },
-            set $inc(value) {
-                this._$inc = value;
-            },
-        },
-            },
-            { upsert: true },
-            (error, results) => {
-                if (error) return next(error)
-                res.send(results)
-                client.close();
+           .update(
+               {
+                   _id: mongodb.ObjectID(req.params.id),
+                   "teams.name": req.params.teamName
+               },
+               {
+                   $inc: {
+                       "teams.$.vote": 1
+                   }
+               },
+               (error, results) => {
+                   if (error){
+                    return res.json({
+                        statusCode: 400,
+                        message:"User not found",
+                        data: {}
+                    })
+                   }
+               return res.contentType("json").json({
+                   statusCode: 200,
+                   message: "Success",
+                   data: {results}
+               })
+            })
+            })
+            }catch (err){
+                console.log(err);
             }
-        )
-})
 
 app.delete('/accounts/:id', (req, res) => {
     db.collection('accounts')
         .remove({ _id: mongodb.ObjectID(req.params.id) }, (error, results) => {
-            if (error) return next(error)
-            res.send(results)
-            client.close();
+            if (error){
+                return res.json({
+                    statusCode: 400,
+                    message:"User not found",
+                    data: {}
+                })
+               }
+           return res.contentType("json").json({
+               statusCode: 200,
+               message: "Success",
+               data: {results}
+           })
         })
-})
-})
+        })
+    })
 app.use(errorhandler())
 app.listen(7000)
